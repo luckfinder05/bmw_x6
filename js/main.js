@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', ev => {
+
+
+    // ACCORDEON 
     const featureLinkElems = document.querySelectorAll('.feature__link');
     const featureSubElems = document.querySelectorAll('.feature-sub');
 
@@ -20,6 +23,9 @@ document.addEventListener('DOMContentLoaded', ev => {
             }
         });
     });
+    // /ACCORDEON 
+
+    // TABS
 
     const designTabsHeaders = document.querySelectorAll('.design-list__item');
     const designTabs = document.querySelectorAll('.design__descr');
@@ -38,4 +44,40 @@ document.addEventListener('DOMContentLoaded', ev => {
             }
         });
     });
+
+    // /TABS
+
+    // MODAL
+    document.querySelector('.button.main__button').addEventListener('click', ev => {
+        const modal = document.querySelector('.modal');
+        modal.classList.remove('hidden');
+
+        // Блокирвка прокрутки
+        // When the modal is shown, we want a fixed body
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${window.scrollY}px`;
+
+        // When the modal is hidden, we want to remain at the top of the scroll position
+        document.body.style.position = '';
+        document.body.style.top = '';
+
+
+        modal.querySelector('.modal__close').addEventListener('click', ev => {
+            modal.classList.add('hidden');
+            document.querySelector('body').style.position = "initial";
+
+            const scrollY = document.body.style.top;
+            document.body.style.position = '';
+            document.body.style.top = '';
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        });
+    });
+
+    // /MODAL
+
+    // FORM
+
+
+    // /FORM
+
 });
