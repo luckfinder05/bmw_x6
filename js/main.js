@@ -5,10 +5,11 @@ document.addEventListener('DOMContentLoaded', ev => {
     smoothScrollElems.forEach((elem, index) => {
         elem.addEventListener('click', ev => {
             ev.preventDefault();
-            console.log(ev);
 
             const blockScroll = document.querySelector(elem.getAttribute("href"));
-            blockScroll.scrollIntoView({ behavior: 'smooth' });
+            blockScroll.scrollIntoView({
+                behavior: 'smooth'
+            });
         });
     });
     // /SMOOTH SCROLL
@@ -71,6 +72,41 @@ document.addEventListener('DOMContentLoaded', ev => {
     // /TABS
 
     // MODAL
+
+    const modal = document.querySelector('.modal');
+    const overlay = document.querySelector('.overlay');
+    const btnCloseModal = modal.querySelector('.modal__close');
+    setTimeout(() => {
+        openModal();
+
+        btnCloseModal.addEventListener('click', closeModal);
+        overlay.addEventListener('click', closeModal);
+    }, 5000);
+
+    function openModal() {
+
+        // Блокировка прокрутки
+        document.body.style.top = `-${window.pageYOffset}px`;
+        document.body.style.position = 'fixed';
+
+        modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+        modal.classList.add('hidden');
+        document.querySelector('body').style.position = "initial";
+
+        // Восстанавливаем прокрутку
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+
+        // Удаляем обработчики событий
+        overlay.removeEventListener('click', closeModal);
+        btnCloseModal.removeEventListener('click', closeModal);
+    }
+
     // document.querySelector('.button.main__button').addEventListener('click', ev => {
     //     const modal = document.querySelector('.modal');
     //     modal.classList.remove('hidden');
