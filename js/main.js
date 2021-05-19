@@ -6,10 +6,42 @@ document.addEventListener('DOMContentLoaded', ev => {
         elem.addEventListener('click', ev => {
             ev.preventDefault();
 
-            const blockScroll = document.querySelector(elem.getAttribute("href"));
-            blockScroll.scrollIntoView({
-                behavior: 'smooth'
-            });
+            //  Первый вариант
+            // const blockScroll = document.querySelector(elem.getAttribute("href"));
+            // blockScroll.scrollIntoView({
+            //     behavior: 'smooth'
+            // });
+
+
+            // Второй вариант, работающий во всех браузерах
+            // behavior: 'smooth' - не поддерживается Safari (macOS)
+            // 
+            //      С настраиваемоей скоростью прокрутки
+            const SPEED = 0.1;
+            
+            let start = 0;
+            const blockScroll = elem.getAttribute("href");
+            const elemScrollTo = document.querySelector(blockScroll);
+
+            const coordinateElem = elemScrollTo.getBoundingClientRect().top;
+            const pageY = window.pageYOffset;
+
+            const step = time => {
+                if (!start) {
+                    start = time;
+                }
+                const progress = time - start;
+
+                const r = (coordinateElem < 0 ?
+                    Math.max(pageY - progress / SPEED, pageY + coordinateElem) :
+                    Math.min(pageY + progress / SPEED, pageY + coordinateElem));
+                window.scrollTo(0, r);
+
+                if (r < pageY + coordinateElem) {
+                    requestAnimationFrame(step);
+                }
+            };
+            requestAnimationFrame(step);
         });
     });
     // /SMOOTH SCROLL
@@ -81,7 +113,7 @@ document.addEventListener('DOMContentLoaded', ev => {
 
         btnCloseModal.addEventListener('click', closeModal);
         overlay.addEventListener('click', closeModal);
-    }, 5000);
+    }, 50000);
 
     function openModal() {
 
