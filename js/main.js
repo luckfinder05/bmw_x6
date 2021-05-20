@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', ev => {
             // 
             //      С настраиваемоей скоростью прокрутки
             const SPEED = 0.1;
-            
+
             let start = 0;
             const blockScroll = elem.getAttribute("href");
             const elemScrollTo = document.querySelector(blockScroll);
@@ -47,6 +47,26 @@ document.addEventListener('DOMContentLoaded', ev => {
     // /SMOOTH SCROLL
 
     // BURGER MENU
+    const burger = document.querySelector('.humburger-menu');
+    burger.addEventListener('click', toggleMenu);
+    const menu = document.querySelector('.menu');
+
+    function toggleMenu() {
+        menu.classList.toggle('menu-active');
+        burger.classList.toggle('humburger-menu-active');
+    }
+
+    const menuListItems = document.querySelectorAll('.menu-list__item');
+    menuListItems.forEach(elem => {
+        elem.addEventListener('click', ev => {
+            menuClose();
+        });
+    });
+
+    function menuClose() {
+        menu.classList.remove('menu-active');
+        burger.classList.remove('humburger-menu-active');
+    }
 
 
     // /BURGER MENU
@@ -105,64 +125,49 @@ document.addEventListener('DOMContentLoaded', ev => {
 
     // MODAL
 
-    const modal = document.querySelector('.modal');
-    const overlay = document.querySelector('.overlay');
-    const btnCloseModal = modal.querySelector('.modal__close');
-    setTimeout(() => {
-        openModal();
+    const modal = document.querySelector('.modal'),
+        overlay = document.querySelector('.overlay'),
+        btnCloseModal = modal.querySelector('.modal__close'),
+        body = document.querySelector('body');
 
-        btnCloseModal.addEventListener('click', closeModal);
-        overlay.addEventListener('click', closeModal);
-    }, 50000);
+    btnCloseModal.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+    document.querySelector('.modal__button').addEventListener('click', submit, ev);
+
+    document.querySelectorAll('button.more').forEach(elem => {
+        elem.addEventListener('click', openModal);
+    });
+    // let scrollY = document.body.style.top;
 
     function openModal() {
-
         // Блокировка прокрутки
-        document.body.style.top = `-${window.pageYOffset}px`;
-        document.body.style.position = 'fixed';
+        // body.style.top = `-${window.pageYOffset}px`;
+        // console.log('window.pageYOffset: ', window.pageYOffset);
+        // document.body.style.position = 'fixed';
+        document.body.style.overflow = 'hidden';
 
         modal.classList.remove('hidden');
     }
 
     function closeModal() {
         modal.classList.add('hidden');
-        document.querySelector('body').style.position = "initial";
+        body.style.removeProperty('overflow');
+        // document.querySelector('body').style.position = "initial";
 
         // Восстанавливаем прокрутку
-        const scrollY = document.body.style.top;
-        document.body.style.position = '';
-        document.body.style.top = '';
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-
-        // Удаляем обработчики событий
-        overlay.removeEventListener('click', closeModal);
-        btnCloseModal.removeEventListener('click', closeModal);
+        // const scrollY = document.body.style.top;
+        // console.log('document.body.style.top: ', document.body.style.top);
+        // console.log('scrollY: ', scrollY);
+        // document.body.style.position = '';
+        // document.body.style.top = '';
+        // window.scrollTo(0, parseInt(scrollY || '0') * -1);
     }
 
-    // document.querySelector('.button.main__button').addEventListener('click', ev => {
-    //     const modal = document.querySelector('.modal');
-    //     modal.classList.remove('hidden');
+    function submit(ev) {
+        ev.preventDefault();
+        closeModal();
 
-    //     // Блокирвка прокрутки
-    //     // When the modal is shown, we want a fixed body
-    //     document.body.style.position = 'fixed';
-    //     document.body.style.top = `-${window.scrollY}px`;
-
-    //     // When the modal is hidden, we want to remain at the top of the scroll position
-    //     document.body.style.position = '';
-    //     document.body.style.top = '';
-
-
-    //     modal.querySelector('.modal__close').addEventListener('click', ev => {
-    //         modal.classList.add('hidden');
-    //         document.querySelector('body').style.position = "initial";
-
-    //         const scrollY = document.body.style.top;
-    //         document.body.style.position = '';
-    //         document.body.style.top = '';
-    //         window.scrollTo(0, parseInt(scrollY || '0') * -1);
-    //     });
-    // });
+    }
 
     // /MODAL
 
