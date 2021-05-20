@@ -139,6 +139,41 @@ document.addEventListener('DOMContentLoaded', ev => {
 
     // /TABS
 
+
+    // BLOCK__SCROLLED
+    function disableScroll() {
+        //1 вариант
+        // document.body.style.overflow = 'hidden';
+        // 2 вариант
+        // document.body.style.cssText = 'overflow:hidden;position:relative;height:100vh;';
+        document.body.dataset.scrollY = window.scrollY;
+        const scrollWidth = window.innerWidth - document.body.offsetWidth;
+        document.body.style.cssText = `
+        overflow:hidden;
+        position:fixed;
+        top:-${window.scrollY}px;
+        left:0;
+        width:100%;
+        height:100vh;
+        padding-right:${scrollWidth}px`;
+
+
+    }
+
+
+    function enableScroll() {
+        //1 вариант
+        // body.style.removeProperty('overflow');
+        // 2 вариант
+        document.body.style.cssText = '';
+        window.scroll({
+            top: document.body.dataset.scrollY
+        });
+    }
+
+    // /BLOCK__SCROLLED
+
+
     // MODAL
 
     const modal = document.querySelector('.modal'),
@@ -160,14 +195,16 @@ document.addEventListener('DOMContentLoaded', ev => {
         // body.style.top = `-${window.pageYOffset}px`;
         // console.log('window.pageYOffset: ', window.pageYOffset);
         // document.body.style.position = 'fixed';
-        document.body.style.overflow = 'hidden';
 
+        // document.body.style.overflow = 'hidden';
+
+        disableScroll();
         modal.classList.remove('hidden');
     }
 
     function closeModal() {
         modal.classList.add('hidden');
-        body.style.removeProperty('overflow');
+        enableScroll();
         // document.querySelector('body').style.position = "initial";
 
         // Восстанавливаем прокрутку
