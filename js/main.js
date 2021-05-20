@@ -1,3 +1,5 @@
+'use strict';
+
 document.addEventListener('DOMContentLoaded', ev => {
 
     // SMOOTH SCROLL
@@ -12,7 +14,7 @@ document.addEventListener('DOMContentLoaded', ev => {
             //     behavior: 'smooth'
             // });
 
-
+            // ================================================================
             // Второй вариант, работающий во всех браузерах
             // behavior: 'smooth' - не поддерживается Safari (macOS)
             // 
@@ -55,6 +57,20 @@ document.addEventListener('DOMContentLoaded', ev => {
         menu.classList.toggle('menu-active');
         burger.classList.toggle('humburger-menu-active');
     }
+    document.body.addEventListener('keydown', ev => {
+        if (ev.code == 'Escape') {
+            closeModal();
+            menuClose();
+        }
+    });
+    document.body.addEventListener('click', ev => {
+        if (ev.target == burger) {
+            burger.addEventListener('click', toggleMenu);
+        } else if (ev.target.closest('.menu') == null && menu.classList.contains('menu-active')) {
+            menuClose();
+            console.log(ev.target.closest('.menu'));
+        }
+    });
 
     const menuListItems = document.querySelectorAll('.menu-list__item');
     menuListItems.forEach(elem => {
