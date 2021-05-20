@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', ev => {
             burger.addEventListener('click', toggleMenu);
         } else if (ev.target.closest('.menu') == null && menu.classList.contains('menu-active')) {
             menuClose();
-            console.log(ev.target.closest('.menu'));
         }
     });
 
@@ -115,8 +114,10 @@ document.addEventListener('DOMContentLoaded', ev => {
     // TABS
 
     const designTabsHeaders = document.querySelectorAll('.design-list__item');
+    const designBlockImages = document.querySelectorAll('.design-block__img');
     const designTabs = document.querySelectorAll('.design__descr');
     const designSectionTitle = document.querySelectorAll('.design .section__title');
+    const designImagesLists = document.querySelectorAll('.design-images');
 
     designTabsHeaders.forEach((el, index) => {
         el.addEventListener('click', ev => {
@@ -124,15 +125,24 @@ document.addEventListener('DOMContentLoaded', ev => {
                 designTabsHeaders.forEach(el => {
                     el.classList.remove('design-list__item_active');
                 });
+                designBlockImages.forEach(el => {
+                    el.classList.add('hidden');
+                });
+
                 designTabs.forEach(el => {
                     el.classList.add('hidden');
                 });
                 designSectionTitle.forEach(el => {
                     el.classList.add('hidden');
                 });
+                designImagesLists.forEach(el => {
+                    el.classList.add('hidden');
+                });
                 el.classList.add('design-list__item_active');
+                designBlockImages[index].classList.remove('hidden');
                 designTabs[index].classList.remove('hidden');
                 designSectionTitle[index].classList.remove('hidden');
+                designImagesLists[index].classList.remove('hidden');
             }
         });
     });
@@ -191,13 +201,6 @@ document.addEventListener('DOMContentLoaded', ev => {
     // let scrollY = document.body.style.top;
 
     function openModal() {
-        // Блокировка прокрутки
-        // body.style.top = `-${window.pageYOffset}px`;
-        // console.log('window.pageYOffset: ', window.pageYOffset);
-        // document.body.style.position = 'fixed';
-
-        // document.body.style.overflow = 'hidden';
-
         disableScroll();
         modal.classList.remove('hidden');
     }
@@ -205,15 +208,6 @@ document.addEventListener('DOMContentLoaded', ev => {
     function closeModal() {
         modal.classList.add('hidden');
         enableScroll();
-        // document.querySelector('body').style.position = "initial";
-
-        // Восстанавливаем прокрутку
-        // const scrollY = document.body.style.top;
-        // console.log('document.body.style.top: ', document.body.style.top);
-        // console.log('scrollY: ', scrollY);
-        // document.body.style.position = '';
-        // document.body.style.top = '';
-        // window.scrollTo(0, parseInt(scrollY || '0') * -1);
     }
 
     function submit(ev) {
